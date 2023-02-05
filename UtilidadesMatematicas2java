@@ -1,0 +1,181 @@
+package maria_ruiz_gonzalez.menuutilidadesmatematicasud2;
+import java.util.Scanner;
+public class PracticaUD3 {
+    public static void main(String[] args) {
+        Scanner menu = new Scanner(System.in); //creamos el escaner del menu
+        int opciones; //declaramos la variable opciones
+        boolean salir = false;//declaramos la variable salir
+        while (!salir){//hacemos un bucle while para que mientras la opcion sea diferente de salir se repita
+            System.out.println("Opciones del menú: \n" + //creamos la impresion del menu para las opciones
+            "1. Tabla de multiplicar\n" +
+            "2. Conjetura de Goldbach\n" +
+            "3. Número ondulado\n" +
+            "4. Números malvados y odiosos\n" +
+            "5. Numeros Complices\n" +
+            "6. Salir\n");            
+            System.out.println("Elige una opción del menú");
+            opciones = menu.nextInt();            
+            switch (opciones) { // Ejecutamos la acción correspondiente a la opción elegida
+                case 1:
+                    imprimirTablaMultiplicar();
+                    break;
+                case 2:
+                    imprimirConjeturaGoldBach();
+                    break;
+                case 3:
+                    System.out.println("Esta es la opcion de Numero Ondulado");
+                    int numero = 0;
+                    while (!((numero > 100) && (numero < 999))){ // Verificamos que el número tenga 3 cifras
+                        System.out.println("Introduce un número entero de 3 cifras.");
+                        Scanner numeroOndulado = new Scanner(System.in);
+                        numero = numeroOndulado.nextInt();
+                    }
+                    boolean esOndulado = esNumeroOndulado(numero); // Verificamos si el número es ondulado
+                    if(esOndulado){
+                        System.out.println("Es Ondulado");
+                    }else{
+                        System.out.println("No es Ondulado");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Esta es la opcion de Numeros Malvados y Odiosos");
+                    System.out.println("Introduce un número.");
+                    Scanner numeroMalvadoOdioso = new Scanner(System.in);
+                    int decimal = numeroMalvadoOdioso.nextInt();
+                    esMalvado(decimal);
+                    if(esMalvado(decimal)== true){
+                        System.out.println("Es un numero malvado");
+                    }else{
+                        System.out.println("Es un numero odioso");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Esta es la opcion de Numeros Complices");
+                    System.out.println("Introduce el primer numero: ");
+                    Scanner numero1 = new Scanner(System.in);
+                    int n1 = numero1.nextInt();
+                    System.out.println("Introduce el segundo numero: ");
+                    Scanner numero2 = new Scanner(System.in);
+                    int n2 = numero2.nextInt();
+                    numerosComplices(n1, n2);
+                    if (numerosComplices(n1, n2) == true) {
+                        System.out.println("Son complices");
+                    }else{
+                        System.out.println("No son complices");
+                    }
+                    break;
+                case 6:
+                    salir = true; // Cambiamos el valor de "salir" a verdadero para finalizar el bucle
+                    System.out.println("ADIOS!! :D");
+                    break;
+                default: // Si la opción elegida no es válida, se imprime un mensaje de error
+                    System.out.println("Lo siento, la opción elegida no es correcta. \n");
+            }
+        }
+    }
+    public static boolean esPrimo(int num) { // Devuelve verdadero si el número es primo, falso en caso contrario
+        if (num <= 1) { // Un número menor o igual a 1 no es primo
+            return false;
+        }
+        for (int i = 2; i < num; i++) { // Verificar si el número es divisible por algún número entre 2 y él mismo
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true; // Si no se encontró ningún divisor, el número es primo
+    }
+    public static String decimalABinario(long decimal) {
+        if (decimal <= 0) { //aqui comprobamos que si el numero es menor o igual a cero; devuelve "0" directamente
+            return "0";
+        }
+        StringBuilder binario = new StringBuilder(); //creamos una variable StringBuilder para construir el numero en base 2 
+        while (decimal > 0) {//hacemos un bucle hasta que en numero se convierta a base 2
+            short residuo = (short) (decimal % 2);
+            decimal = decimal / 2; //actualizamos el valor del numero en base 10 dividiendolo entre 2
+            binario.insert(0, String.valueOf(residuo)); //agrega el residuo a la variable StringBuilder
+        }
+        return binario.toString(); //devuelve el numero en base 2 como una cadena de caracteres
+    }
+    public static void imprimirTablaMultiplicar(){
+        System.out.println("Esta es la opcion de multiplicar");  // Imprime un mensaje para la opcion multiplicar
+        int multiplicando;  // Pide al usuario que ingrese el multiplicando
+        System.out.println("¿Que tabla desea Realizar?");
+        Scanner tablaMultiplicar = new Scanner(System.in);
+        multiplicando = tablaMultiplicar.nextInt();
+        int multiplicador;// Realiza un bucle desde 1 hasta 10 para generar la tabla de multiplicar
+        for (multiplicador = 1; multiplicador <= 10; multiplicador++) {
+            System.out.println(multiplicando + " X " + multiplicador + " = " + multiplicando * multiplicador);   // Imprime el resultado de cada multiplicación
+        }
+    }
+    public static void imprimirConjeturaGoldBach(){
+        System.out.println("Esta es la opcion de la Conjetura de Goldbach"); // Imprime un mensaje para la opcion conjetura
+        int n;  // Pide al usuario que ingrese un número
+        System.out.println("Introduce un numero: ");
+        Scanner goldbach = new Scanner(System.in);
+        n = goldbach.nextInt();
+        for (int i = 1; i < n; i++) { // Realiza un bucle anidado desde 1 hasta el número ingresado por el usuario
+            for (int j = 1; j < n; j++) { 
+                if (i + j == n) { 
+                    if (esPrimo(i) && esPrimo(j)) {
+                        System.out.println(i + " + " + j + " = " + n);
+                    }
+                }
+            }
+        }
+    }
+    public static boolean esNumeroOndulado(int numero){
+        String n1 = String.valueOf(numero); // Convertimos el número entero en una cadena de caracteres
+        if (n1.length() != 3) {  // Verificamos si la longitud de la cadena es igual a 3
+            return false; // Si no lo es, devolvemos falso
+        }
+        if (n1.charAt(0) == n1.charAt(1) && n1.charAt(1) == n1.charAt(2)) { // Verificamos si todos los caracteres de la cadena son iguales
+            return false; // Si lo son, devolvemos falso
+        }
+        if (n1.charAt(0) != n1.charAt(1) && n1.charAt(1) != n1.charAt(2) && n1.charAt(0) != n1.charAt(2)) { // Verificamos si al menos dos de los caracteres de la cadena son 
+            return false; // Si lo son, devolvemos falso
+        }
+        return true; // Si llegamos hasta aquí, devolvemos verdadero
+    
+    }
+    public static int totalUnos(int numero){
+        String numeroComoCadena = Integer.toString(numero); // Convertimos el número entero en una cadena de caracteres
+        int contadorUnos = 0; // Inicializamos un contador de unos en 0
+        for (int i = 0; i < numeroComoCadena.length(); i++) { // Iteramos sobre cada carácter de la cadena
+            if (numeroComoCadena.charAt(i) == '1') { // Si el carácter es igual a '1', incrementamos el contador de unos
+                contadorUnos++;
+            }
+        }
+        return contadorUnos; // Devolvemos el valor del contador de unos
+    }
+    public static boolean esMalvado(int numero){
+        String binario = decimalABinario(numero); // Convertir el número a representación binaria
+        int contadorUnos = Integer.parseInt(binario);   // Contar el número de unos en la representación binaria
+        int suma = totalUnos(contadorUnos); // Usar la función "totalUnos" para contar el número de unos
+        if (suma % 2 == 0) { // Devolver verdadero si el número de unos es par, falso en otro caso
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static boolean numerosComplices(int n1, int n2){
+        if (String.valueOf(n1).length() != String.valueOf(n2).length()){  // Los números deben tener la misma cantidad de dígitos
+            return false;
+        }
+        if (n1 == reverso(n1) || n2 == reverso(n2) || n1 == reverso(n2) || n2 == reverso(n1)){ // Los números no pueden ser palíndromos ni pueden ser la inversa del otro número
+            return false;
+        }
+        if (n1 * n2 != reverso(n1)*reverso(n2)){ // El producto de los números no puede ser igual al producto de sus inversas
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public static int reverso(int numero){ // Devuelve el número dado en forma invertida
+        int reverso = 0;
+        while(numero>0){ // Agregar el último dígito del número al número inverso
+            reverso= 10 * reverso + (numero % 10);
+            numero /= 10; // Quitar el último dígito del número
+        }
+        return reverso;
+    }
+}
